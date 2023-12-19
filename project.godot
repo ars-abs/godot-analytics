@@ -14,6 +14,10 @@ config/name="Api Client"
 run/main_scene="res://Node.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Analytics="*res://Analytics.gd"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
