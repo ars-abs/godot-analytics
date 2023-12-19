@@ -31,7 +31,8 @@ func putReq():
 	var put_body = JSON.print(put_data)
 	http_request.request(put_url, [], true, HTTPClient.METHOD_PUT, put_body)
 
-func _on_request_completed(result, response_code, headers, body):
+func onReqCompleted(result, response_code, headers, body):
+	print('called')
 	var data = JSON.parse(body.get_string_from_utf8()).result
 	var output = {
 		'result': result, 
@@ -44,11 +45,13 @@ func _on_request_completed(result, response_code, headers, body):
 
 func _ready():
 	http_request = HTTPRequest.new()
+	http_request.connect("request_completed", self, "onReqCompleted")
 	add_child(http_request)
-	http_request.connect("request_completed", self, "_on_request_completed")
-	
+
 	getReq();
-	http_request.connect("request_completed", self, "_on_request_completed")
+	yield(http_request, "request_completed")
 	postReq();
-#	putReq();
-#	deleteReq();
+	yield(http_request, "request_completed")
+	putReq();
+	yield(http_request, "request_completed")
+	deleteReq();
