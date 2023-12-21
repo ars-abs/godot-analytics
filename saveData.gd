@@ -2,9 +2,11 @@ extends Node
 
 func _ready():
 	var data = {
-		"userId": "123",
-		"createdAt": "2023-12-18T12:00:00",
-		"level": 4,
-		"duration": 10
+		"userID": "abc",
+		"data": JSON.print({
+			"level":1,
+			"duration": 15
+		}),
 	}
+
 	Analytics.save(data)
