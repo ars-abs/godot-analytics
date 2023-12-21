@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "SQLiteWrapper",
+"language": "GDScript",
+"path": "res://addons/godot-sqlite/godot-sqlite-wrapper.gd"
+} ]
+_global_script_class_icons={
+"SQLiteWrapper": ""
+}
+
 [application]
 
 config/name="Api Client"
@@ -17,6 +27,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Analytics="*res://Analytics.gd"
+UserData="*res://UserData.gd"
+Sqlite="*res://addons/godot-sqlite/godot-sqlite-wrapper.gd"
 
 [gui]
 
