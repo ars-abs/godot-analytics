@@ -1,8 +1,9 @@
 extends Node
 
-var http_request: HTTPRequest; 
+var http_request: HTTPRequest;
+var user_event: UserEvent;
 
-func save(data):
+func send(data):
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.connect("request_completed", self, "_onReqCompleted")
@@ -15,3 +16,18 @@ func save(data):
 func _onReqCompleted(result, response_code, _headers, body):
 	var data = JSON.parse(body.get_string_from_utf8()).result
 	UserData.save(data)
+
+func saveLocal(event):
+	user_event.create(event)
+	
+func saveRemote():
+	var localEvents = user_event.getAll()
+	for event in localEvents:
+		send(event)
+
+func save(data):
+	saveLocal(data);
+	saveRemote();
+	
+func _ready():
+	user_event = UserEvent.new()
