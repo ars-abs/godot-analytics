@@ -1,26 +1,17 @@
 extends Node
 
 var http_request: HTTPRequest; 
-var response;
-var prettyResponse;
 
 func save(data):
+	http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.connect("request_completed", self, "_onReqCompleted")
 	var post_url = "http://localhost:1234/events"
 	var post_body = JSON.print(data)
 	http_request.request(post_url, [], true, HTTPClient.METHOD_POST, post_body)
+	yield(http_request, "request_completed")
+	remove_child(http_request)
 
-func onReqCompleted(result, response_code, _headers, body):
+func _onReqCompleted(result, response_code, _headers, body):
 	var data = JSON.parse(body.get_string_from_utf8()).result
-	response = {
-		'result': result, 
-		'responseCode': response_code, 
-		'data': data,
-	}
-	prettyResponse = JSON.print(response, "\t")
-
-func _ready():
-	http_request = HTTPRequest.new()
-	add_child(http_request)
-	http_request.connect("request_completed", self, "onReqCompleted")
-
-	
+	UserData.save(data)

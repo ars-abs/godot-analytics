@@ -8,5 +8,3 @@ func _ready():
 		"duration": 10
 	}
 	Analytics.save(data)
-	yield(Analytics.http_request, "request_completed")
-	print("Backend Data:", Analytics.prettyResponse)
