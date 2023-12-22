@@ -3,7 +3,7 @@ extends Node
 var db = SQLiteWrapper.new()
 
 func _ready():
-	db.path = "database.sqlite"
+	db.path = "res://data/database.sqlite"
 
 	if db.open_db():
 		print("Database opened successfully.")
@@ -14,6 +14,7 @@ func _ready():
 		"id": { "data_type":"int", "primary_key": true, "auto_increment":true },
 		"name": {"data_type":"text"},
 		"health": {"data_type":"int"},
+		"deadAt": {"data_type": "date"}
 	}
 	
 	if db.create_table("monsters", schema):
@@ -23,14 +24,16 @@ func _ready():
 
 	var data = {
 		"name": "Dragon",
-		"health": 100
+		"health": 100,
+		"deadAt": Time.get_datetime_string_from_system()
 	}
+
 	if db.insert_row("monsters", data):
 		print("Row inserted successfully.")
 	else:
 		print("Failed to insert row.")
 
-	var selected_columns = ["id", "name", "health"]
+	var selected_columns = ["id", "name", "health", "deadAt"]
 	var query_conditions = ""
 	var result = db.select_rows("monsters", query_conditions, selected_columns)
 	print("Selected Rows:")
@@ -48,16 +51,16 @@ func _ready():
 	result = db.select_rows("monsters", query_conditions, selected_columns)
 	print("Selected Rows After Update:")
 	print(result)
-
-	var delete_conditions = "name = 'Dragon'"
-	if db.delete_rows("monsters", delete_conditions):
-		print("Row deleted successfully.")
-	else:
-		print("Failed to delete row.")
-
-	result = db.select_rows("monsters", query_conditions, selected_columns)
-	print("Selected Rows After Delete:")
-	print(result)
+#
+#	var delete_conditions = "name = 'Dragon'"
+#	if db.delete_rows("monsters", delete_conditions):
+#		print("Row deleted successfully.")
+#	else:
+#		print("Failed to delete row.")
+#
+#	result = db.select_rows("monsters", query_conditions, selected_columns)
+#	print("Selected Rows After Delete:")
+#	print(result)
 
 	db.close_db()
 	print("Database closed.")

@@ -7,14 +7,15 @@ func getReq():
 	http_request.request(get_url,[], true, HTTPClient.METHOD_GET)
 
 func postReq():
-	var post_url = "https://jsonplaceholder.typicode.com/posts"
+	var post_url = "http://localhost:1234/events"
 	var post_data = {
 		'title': 'foo',
 		'body': 'bar',
 		'userId': 1,
 	}
 	var post_body = JSON.print(post_data)
-	http_request.request(post_url, [], true, HTTPClient.METHOD_POST, post_body)
+	http_request.request(post_url,["Content-Type: application/json"], false, HTTPClient.METHOD_POST, post_body)
+	
 
 func deleteReq():
 	var delete_url = "https://jsonplaceholder.typicode.com/posts/1"
