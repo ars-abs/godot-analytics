@@ -19,6 +19,9 @@ func create(data):
 func getAll():
 	return db.select_rows(table_name, '', ['id','userID', 'data', 'sync', 'createdAt'])
 
+func getAllUnSync():
+	return db.select_rows(table_name, 'sync = 0', ['id','userID', 'data', 'createdAt'])
+
 func update(id,data):
 	var condition = "id = "+ str(id)
 	return db.update_rows(table_name, condition,data)
@@ -29,6 +32,7 @@ func createDB():
 		"userID": {"data_type":"text"},
 		"data": {"data_type":"blob"},
 		"createdAt": {"data_type":"date"},
-		"sync": {"data_type":"date"}
+		"syncAt": {"data_type":"date"},
+		"sync": {"data_type":"bool", "default": 0}
 	}
 	return db.create_table(table_name, schema)
