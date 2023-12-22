@@ -23,12 +23,12 @@ func saveLocal(event):
 func saveRemote():
 	var localEvents = user_event.getAllUnSync()
 	for event in localEvents:
+		event.data= JSON.parse(event.data).result
 		sendReq(event)
 
 func save(data):
 	saveLocal(data);
-	var somehowCheckIsOnline = true
-	if somehowCheckIsOnline: saveRemote();
+	saveRemote();
 	
 func _ready():
 	user_event = UserEvent.new()
